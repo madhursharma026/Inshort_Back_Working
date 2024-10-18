@@ -1,0 +1,141 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Article {
+  createdAt: DateTime!
+  description: String!
+  id: Int!
+  imageURL: String!
+  status: String!
+  title: String!
+}
+
+input CreateArticleInput {
+  description: String!
+  imageURL: String!
+  status: String = "active"
+  title: String!
+}
+
+input CreateNewsInput {
+  author: String
+  description: String
+  language: String
+  priority: String = "normal"
+  readMoreContent: String
+  sourceURL: String
+  sourceURLFormate: String
+  status: String = "active"
+  title: String
+  url: String
+}
+
+input CreateReportInput {
+  details: String!
+  newsId: Int
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type LoginResponse {
+  access_token: String!
+  user: User!
+}
+
+input LoginUserInput {
+  password: String!
+  username: String!
+}
+
+type Mutation {
+  createArticle(createArticleInput: CreateArticleInput!): Article!
+  createNews(createNewsInput: CreateNewsInput!): News!
+  createReport(createReportInput: CreateReportInput!): Report!
+  downgradeNewsToLowPriority(id: Int!): Boolean!
+  generateOtp(phoneNumber: String!): OtpResponse!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  signup(loginUserInput: LoginUserInput!): User!
+  updateArticle(id: Int!, updateArticleInput: UpdateArticleInput!): Article!
+  updateNews(id: Int!, updateNewsInput: UpdateNewsInput!): News!
+  userVerify(userToken: UserTokenInput!): LoginResponse!
+  verifyOtp(otpCode: String!, phoneNumber: String!): OtpResponse!
+}
+
+type News {
+  author: String!
+  description: String!
+  id: Int!
+  language: String!
+  priority: String!
+  publishedAt: DateTime!
+  readMoreContent: String!
+  reports: [Report!]
+  sourceURL: String!
+  sourceURLFormate: String!
+  status: String!
+  title: String!
+  url: String!
+}
+
+type OtpData {
+  phoneNumber: String!
+  sessionId: String!
+}
+
+type OtpResponse {
+  data: OtpData
+  message: String!
+  success: Boolean!
+}
+
+type Query {
+  allNews: [News!]!
+  articles: [Article!]!
+  newsById(id: Int!): News!
+  newsByLanguage(language: String!): [News!]!
+  reports: [Report!]!
+  user(username: String!): User!
+  users: [User!]!
+}
+
+type Report {
+  details: String!
+  id: Int!
+  news: News
+  newsId: Int!
+  timesReported: Int!
+}
+
+input UpdateArticleInput {
+  description: String
+  imageURL: String
+  status: String = "active"
+  title: String
+}
+
+input UpdateNewsInput {
+  author: String
+  description: String
+  language: String
+  priority: String = "normal"
+  readMoreContent: String
+  sourceURL: String
+  sourceURLFormate: String
+  status: String = "active"
+  title: String
+  url: String
+}
+
+type User {
+  id: Int!
+  password: String!
+  username: String!
+}
+
+input UserTokenInput {
+  userToken: String!
+}
