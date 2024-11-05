@@ -67,10 +67,17 @@ export class OtpService {
         mobileNumber.status = 'verified';
         await this.mobileNumberRepository.save(mobileNumber);
 
+        // Include phoneNumber, name, status, and profilePhoto in the return response
         return {
           success: true,
           message: 'OTP verified successfully',
-          data: mobileNumber,
+          data: {
+            phoneNumber: mobileNumber.phoneNumber,
+            name: mobileNumber.name, // Include the name field
+            status: mobileNumber.status, // Include status
+            sessionId: sessionId,
+            profilePhoto: mobileNumber.profilePhoto, // Include profile photo
+          },
         };
       } else {
         throw new BadRequestException('OTP verification failed');
@@ -78,5 +85,34 @@ export class OtpService {
     } catch (error) {
       throw new BadRequestException('Error verifying OTP: ' + error.message);
     }
+  }
+
+  async updateUserProfile(
+    phoneNumber: string,
+    newName?: string,
+    newProfilePhoto?: string,
+  ): Promise<MobileNumber> {
+    const mobileNumber = await this.mobileNumberRepository.findOne({
+      where: { phoneNumber },
+    });
+
+    if (!mobileNumber) {
+      throw new BadRequestException('Mobile number not found');
+    }
+
+    // Only update the name if a new one is provided
+    if (newName) {
+      mobileNumber.name = newName;
+    }
+
+    // Only update the profile photo if a new one is provided
+    if (newProfilePhoto) {
+      mobileNumber.profilePhoto = newProfilePhoto;
+    }
+
+    // Save the updated entity
+    await this.mobileNumberRepository.save(mobileNumber);
+
+    return mobileNumber;
   }
 }

@@ -51,6 +51,17 @@ input LoginUserInput {
   username: String!
 }
 
+type MobileNumber {
+  createdAt: DateTime!
+  id: Int!
+  lastLogin: DateTime!
+  name: String!
+  phoneNumber: String!
+  profilePhoto: String!
+  sessionId: String!
+  status: String!
+}
+
 type Mutation {
   createArticle(createArticleInput: CreateArticleInput!): Article!
   createNews(createNewsInput: CreateNewsInput!): News!
@@ -61,6 +72,7 @@ type Mutation {
   signup(loginUserInput: LoginUserInput!): User!
   updateArticle(id: Int!, updateArticleInput: UpdateArticleInput!): Article!
   updateNews(id: Int!, updateNewsInput: UpdateNewsInput!): News!
+  updateUserProfile(newName: String, newProfilePhoto: String, phoneNumber: String!): MobileNumber!
   userVerify(userToken: UserTokenInput!): LoginResponse!
   verifyOtp(otpCode: String!, phoneNumber: String!): OtpResponse!
 }
@@ -82,8 +94,11 @@ type News {
 }
 
 type OtpData {
+  name: String
   phoneNumber: String!
-  sessionId: String!
+  profilePhoto: String
+  sessionId: String
+  status: String
 }
 
 type OtpResponse {
@@ -94,6 +109,7 @@ type OtpResponse {
 
 type Query {
   allNews: [News!]!
+  article(id: Int!): Article!
   articles: [Article!]!
   newsById(id: Int!): News!
   newsByLanguage(language: String!): [News!]!

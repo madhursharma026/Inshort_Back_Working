@@ -27,4 +27,9 @@ export class ArticlesResolver {
   ) {
     return this.articlesService.update(id, updateArticleInput);
   }
+
+  @Query(() => Article, { name: 'article' })
+  async findOne(@Args('id', { type: () => Int }) id: number) {
+    return await this.articlesService.findOne(id);
+  }
 }

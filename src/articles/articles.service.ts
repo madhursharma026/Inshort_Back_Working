@@ -34,4 +34,14 @@ export class ArticlesService {
 
     return this.articleRepository.save(articles);
   }
+
+  async findOne(id: number): Promise<Article> {
+    const article = await this.articleRepository.findOne({ where: { id } });
+
+    if (!article) {
+      throw new NotFoundException(`Article with ID ${id} not found`);
+    }
+
+    return article;
+  }
 }
